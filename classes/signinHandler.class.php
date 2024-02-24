@@ -1,6 +1,6 @@
 <?php
 
-require_once "signin.class.php";
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/signin.class.php');
 
 class SigninHandler extends Signin
 {
@@ -19,7 +19,7 @@ class SigninHandler extends Signin
   public function signinValidate()
   {
     if ($this->emptyInput() == true) {
-      header("location: ../signin.php?error=emptyInput");
+      header("location: /signin.php?error=emptyInput");
     }
 
     $this->signinProceed($this->username, $this->password);

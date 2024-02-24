@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+<base href="~/" />
 
 <?php
-include_once 'templates/header.php';
+include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/header.php');
 
 ?>
 
 <section class="form-text">
   <h2 class="center">Registration</h2>
-  <form class="white" action="./includes/register.inc.php" method="POST">
+  <form class="white" action="/includes/register.inc.php" method="POST">
     <div class="red-text">
       <label>Username:</label>
       <input type="text" name="username" placeholder="a-zA-Z0-9_">
@@ -29,7 +30,7 @@ include_once 'templates/header.php';
     </div>
   </form>
   <div>
-    <a href="./signin.php">Already have an account?</a>
+    <a href="/signin.php">Already have an account?</a>
   </div>
 </section>
 
@@ -55,4 +56,4 @@ if (isset($_GET["error"])) {
   }
 }
 
-include_once 'templates/footer.php';
+include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/footer.php');

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-
+<base href="~/" />
 
 <?php
-include_once 'templates/header.php';
+include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/header.php');
 ?>
 
 <section class="">
   <h2 class="center">Sign in</h2>
-  <form class="form-text" action="./includes/signin.inc.php" method="POST">
+  <form class="form-text" action="/includes/signin.inc.php" method="POST">
     <div>
       <label>Username/Email:</label>
       <input type="text" name="username" placeholder="">
@@ -43,4 +43,4 @@ if (isset($_GET["error"])) {
   }
 }
 
-include_once 'templates/footer.php';
+include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/footer.php');

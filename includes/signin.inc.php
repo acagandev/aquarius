@@ -7,9 +7,9 @@ if (isset($_POST['submit'])) {
   $username = $_POST["username"];
   $password = $_POST["password"];
 
-  include "../classes/dbHandler.class.php";
-  include "../classes/signin.class.php";
-  include "../classes/signinHandler.class.php";
+  include($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
+  include($_SERVER['DOCUMENT_ROOT'] . '/classes/signin.class.php');
+  include($_SERVER['DOCUMENT_ROOT'] . '/classes/signinHandler.class.php');
 
   $signin = new signinHandler($username, $password);
 

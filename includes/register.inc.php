@@ -9,9 +9,9 @@ if (isset($_POST['submit'])) {
   $password = $_POST["password"];
   $passwordRepeat = $_POST["passwordRepeat"];
 
-  include "../classes/dbHandler.class.php";
-  include "../classes/register.class.php";
-  include "../classes/registerHandler.class.php";
+  include($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
+  include($_SERVER['DOCUMENT_ROOT'] . '/classes/register.class.php');
+  include($_SERVER['DOCUMENT_ROOT'] . '/classes/registerHandler.class.php');
 
   $register = new registerHandler($username, $email, $password, $passwordRepeat);
 

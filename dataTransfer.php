@@ -35,8 +35,8 @@ if (isset($_GET["value2"])) {
   exit();
 }
 
-include "./classes/dbHandler.class.php";
-require './classes/dataTransfer.class.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/classes/dataTransfer.class.php');
 
 $dataMap = new DataTransfer($projectID, $value1, $value2);
 

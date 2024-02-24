@@ -1,7 +1,6 @@
 <?php
 
-require_once "dbHandler.class.php";
-
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
 class DataTransfer extends DbHandler
 {
   private $projectID;
@@ -45,7 +44,7 @@ class DataTransfer extends DbHandler
 
     if (!$stmt->execute()) {
       $stmt = null;
-      header("location: ./dataTransfer.php?error=projectNotFound");
+      header("location: /dataTransfer.php?error=projectNotFound");
       exit();
     }
 
@@ -57,12 +56,12 @@ class DataTransfer extends DbHandler
 
     if (!$stmt->execute()) {
       $stmt = null;
-      header("location: ./dataTransfer.php?error=stmtfailed");
+      header("location: /dataTransfer.php?error=stmtfailed");
       exit();
     }
 
     $stmt = null;
 
-    header("location: ./dataTransfer.php?error=dataUploadOK");
+    header("location: /dataTransfer.php?error=dataUploadOK");
   }
 }

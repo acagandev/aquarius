@@ -1,6 +1,6 @@
 <?php
 
-require_once "dbHandler.class.php";
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
 
 class Register extends DbHandler
 {
@@ -13,13 +13,13 @@ class Register extends DbHandler
 
     if (!$stmt->execute(array($username, $email, $hashedPassword))) {
       $stmt = null;
-      header("location: ../register.php?error=stmtfailed");
+      header("location: /register.php?error=stmtfailed");
       exit();
     }
 
     $stmt = null;
 
-    header("location: ../register.php?error=none");
+    header("location: /register.php?error=none");
   }
 
   // ERROR HANDLER METHODS
@@ -29,7 +29,7 @@ class Register extends DbHandler
 
     if (!$stmt->execute(array($username, $email))) {
       $stmt = null;
-      header("location: ../register.php?error=stmtfailed");
+      header("location: /register.php?error=stmtfailed");
       exit();
     }
 

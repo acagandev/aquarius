@@ -1,6 +1,6 @@
 <?php
 
-require_once "register.class.php";
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/register.class.php');
 
 class RegisterHandler extends Register
 {
@@ -22,22 +22,22 @@ class RegisterHandler extends Register
   public function registerValidate()
   {
     if ($this->loginTaken() == true) {
-      header("location: ../register.php?error=loginTaken");
+      header("location: /register.php?error=loginTaken");
       exit();
     }
 
     if ($this->emptyInput() == true) {
-      header("location: ../register.php?error=emptyInput");
+      header("location: /register.php?error=emptyInput");
       exit();
     }
 
     if ($this->invalidUsernameChar() == true) {
-      header("location: ../register.php?error=invalidUChar");
+      header("location: /register.php?error=invalidUChar");
       exit();
     }
 
     if ($this->invalidUsernameLength() == true) {
-      header("location: ../register.php?error=invalidULenght");
+      header("location: /register.php?error=invalidULenght");
       exit();
     }
 
@@ -47,7 +47,7 @@ class RegisterHandler extends Register
     // }
 
     if ($this->passwordMismatch() == true) {
-      header("location: ../register.php?error=passwordMismatch");
+      header("location: /register.php?error=passwordMismatch");
       exit();
     }
     $this->registerProceed($this->username, $this->email, $this->password);
