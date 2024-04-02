@@ -49,7 +49,7 @@ $columnList = $data['column_names'];
   </form>
 </div>
 <div>
-  <form id="columnSelectForm" action="/includes/plotData.inc.php" method="post">
+  <form id="columnSelectForm" action="/includes/plotData.inc.php" method="post" onsubmit="return validateForm()">
     <label for="columnList">Choose parameter:</label>
     <select name="columnSelectList" id="columnSelectList">
       <option value="" disabled selected>Select an option</option>
@@ -101,6 +101,28 @@ $columnList = $data['column_names'];
   attachChangeEvent('tableSelectList', 'submitBtn1');
   attachChangeEvent('columnSelectList', 'submitBtn2');
 </script>
+
+<!-- Prevent form from being submitted before all selections are made -->
+<script>
+  function validateForm() {
+    var tableSelectedList = document.getElementById('tableSelectList');
+    var columnSelectList = document.getElementById('columnSelectList');
+    var startDate = document.getElementById('startDate');
+    var stopDate = document.getElementById('stopDate');
+
+    if (tableSelectList.value === '' ||
+      tableSelectList.value === 'Select an option' ||
+      columnSelectList.value === '' ||
+      columnSelectList.value === 'Select an option' ||
+      startDate.value === '' ||
+      stopDate.value === '') {
+      alert('Please fill out all required fields.');
+      return false;
+    }
+    return true;
+  }
+</script>
+
 
 <?php
 

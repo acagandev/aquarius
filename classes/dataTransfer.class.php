@@ -62,6 +62,8 @@ class DataTransfer extends DbHandler
   {
     $jsonKey = 'plot_data';
     $jsonFileName = 'plot.data';
+    $x_array = null;
+    $y_array = null;
 
     $stmt = $this->connectPD()->prepare('SELECT * FROM ' . $this->dataTable . ' WHERE measured >= :value1 AND measured <= :value2');
     $stmt->bindParam(':value1', $this->value1);
@@ -78,7 +80,7 @@ class DataTransfer extends DbHandler
 
       $plot_data = array(
         'x_array' => $x_array,
-        'y_array' => $x_array
+        'y_array' => $y_array
       );
 
       $this->jsonReplaceData($jsonKey, $plot_data, $jsonFileName);
@@ -86,6 +88,13 @@ class DataTransfer extends DbHandler
       echo 'Data saved to file successfully.';
     } else {
       // Handle statement execution error
+    }
+
+    //  Error handler for empty array - not working, error thrown when date range is empty
+    if (!$x_array or !$y_array) {
+      echo "nothing to plot";
+    } else {
+      echo "ok";
     }
   }
 
