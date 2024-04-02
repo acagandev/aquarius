@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.0(3) - 02.04.2024
+
+- Improved database data transfering
+
 ## v0.0.2(2) - 24.02.2024
 
 - Added changelog.md

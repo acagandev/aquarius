@@ -1,7 +1,5 @@
 <?php
 
-// check if form was send
-
 if (isset($_POST['submit'])) {
 
   $username = $_POST["username"];
