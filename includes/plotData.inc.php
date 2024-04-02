@@ -1,22 +1,14 @@
 <?php
 
-if (isset($_POST['submitAll'])) {
-
-  $table = $_POST["tableSelectList"];
+if (isset($_POST['submit'])) {
+  $table = $_POST["selectedTable"];
   $parameter = $_POST["columnSelectList"];
   $startDate = $_POST["startDate"];
   $stopDate = $_POST["stopDate"];
 
-  echo $table;
-
-  include($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
+  include($_SERVER['DOCUMENT_ROOT'] . '/classes/dataTransfer.class.php');
   include($_SERVER['DOCUMENT_ROOT'] . '/classes/plotData.class.php');
-  // include($_SERVER['DOCUMENT_ROOT'] . '/classes/signinHandler.class.php');
 
-  // $signin = new signinHandler($username, $password);
-  // $plotData = new 
-
-  // Error hadnlers
-
-  // $signin->signinValidate();
+  $downloadedData = new DataTransfer($table, $parameter, $startDate, $stopDate);
+  $downloadedData->downloadDataDB($parameter);
 }

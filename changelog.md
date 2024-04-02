@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.1.0(3) - 02.04.2024
+## v0.1.0beta(3) - 02.04.2024
 
 - Improved database data transfering
 

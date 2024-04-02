@@ -4,12 +4,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
 class DataTransfer extends DbHandler
 {
   private $dataTable;
+  private $parameter;
   private $value1;
   private $value2;
 
-  public function __construct($dataTable, $value1, $value2)
+  public function __construct($dataTable = null, $parameter = null, $value1 = null, $value2 = null)
   {
     $this->dataTable = $dataTable;
+    $this->$parameter = $parameter;
     $this->value1 = $value1;
     $this->value2 = $value2;
   }
