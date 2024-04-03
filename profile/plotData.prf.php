@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/header.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/includes/downloadDataDB.inc.php');
 
@@ -11,7 +11,7 @@ $jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/plot.data
 $data = json_decode($jsonDataString, true);
 $tableList = $data['table_names'];
 $columnList = $data['column_names'];
-
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -71,10 +71,14 @@ $columnList = $data['column_names'];
   <label for="datetime">From:</label>
   <input type="datetime-local" id="startDate" name="startDate">
   <label for="datetime">To:</label>
-  <input type="datetime-local" id="stopDate" name="stopDate" value="<?php echo date('Y-m-d\TH:i'); ?>">
+  <input type="datetime-local" id="stopDate" name="stopDate" value="<?php ob_start();
+                                                                    echo date('Y-m-d\TH:i');
+                                                                    ob_end_flush(); ?>">
 </div>
 <div>
-  <input type="hidden" name="selectedTable" value="<?php echo $tbl; ?>">
+  <input type="hidden" name="selectedTable" value="<?php ob_start();
+                                                    echo $tbl;
+                                                    ob_flush() ?>">
   <button type="submit" name="submit">Plot</button>
 </div>
 </form>
@@ -82,45 +86,45 @@ $columnList = $data['column_names'];
 
 <!-- Disable default option "Select an option" -->
 <script>
-function removeDefaultOption() {
-  var defaultOption = document.querySelector('#columnSelectList option[value=""]');
-  defaultOption.remove();
-}
+  function removeDefaultOption() {
+    var defaultOption = document.querySelector('#columnSelectList option[value=""]');
+    defaultOption.remove();
+  }
 </script>
 
 <!-- Automatically submit first form -->
 <script>
-function attachChangeEvent(selectId, submitBtnId) {
-  const selectElement = document.getElementById(selectId);
-  const submitButton = document.getElementById(submitBtnId);
+  function attachChangeEvent(selectId, submitBtnId) {
+    const selectElement = document.getElementById(selectId);
+    const submitButton = document.getElementById(submitBtnId);
 
-  selectElement.addEventListener('change', function() {
-    submitButton.click();
-  });
-}
-attachChangeEvent('tableSelectList', 'submitBtn1');
-attachChangeEvent('columnSelectList', 'submitBtn2');
+    selectElement.addEventListener('change', function() {
+      submitButton.click();
+    });
+  }
+  attachChangeEvent('tableSelectList', 'submitBtn1');
+  attachChangeEvent('columnSelectList', 'submitBtn2');
 </script>
 
 <!-- Prevent form from being submitted before all selections are made -->
 <script>
-function validateForm() {
-  var tableSelectedList = document.getElementById('tableSelectList');
-  var columnSelectList = document.getElementById('columnSelectList');
-  var startDate = document.getElementById('startDate');
-  var stopDate = document.getElementById('stopDate');
+  function validateForm() {
+    var tableSelectedList = document.getElementById('tableSelectList');
+    var columnSelectList = document.getElementById('columnSelectList');
+    var startDate = document.getElementById('startDate');
+    var stopDate = document.getElementById('stopDate');
 
-  if (tableSelectList.value === '' ||
-    tableSelectList.value === 'Select an option' ||
-    columnSelectList.value === '' ||
-    columnSelectList.value === 'Select an option' ||
-    startDate.value === '' ||
-    stopDate.value === '') {
-    alert('Please fill out all required fields.');
-    return false;
+    if (tableSelectList.value === '' ||
+      tableSelectList.value === 'Select an option' ||
+      columnSelectList.value === '' ||
+      columnSelectList.value === 'Select an option' ||
+      startDate.value === '' ||
+      stopDate.value === '') {
+      alert('Please fill out all required fields.');
+      return false;
+    }
+    return true;
   }
-  return true;
-}
 </script>
 
 
@@ -131,8 +135,32 @@ if (isset($_GET["result"])) {
     echo "<p>There are no data in defined date range.</p>";
   } elseif ($_GET["result"] == "dataReceived") {
     echo "<p>Generating plot...</p>";
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/includes/generateGraph.inc.php');
   } elseif ($_GET["result"] == "stmtFailed") {
     echo "<p>Database error.</p>";
+  }
+} elseif (isset($_GET["jpgraph"])) {
+  if ($_GET["jpgraph"] == "graphGenerated") {
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display PNG Image</title>
+</head>
+<body>
+    <!-- Other HTML content -->
+
+    <!-- Display the PNG image -->
+    <div>
+        <img src="/profile/graph2.png" alt="PNG Image">
+    </div>
+
+    <!-- Other HTML content -->
+</body>
+</html>
+HTML;
   }
 }
 
