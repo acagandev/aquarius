@@ -1,6 +1,8 @@
 <?php
-require($_SERVER['DOCUMENT_ROOT'] . '/jpgraph/jpgraph.php');
-require($_SERVER['DOCUMENT_ROOT'] . '/jpgraph/jpgraph_line.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/jpgraph/jpgraph.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/jpgraph/jpgraph_line.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/jpgraph/jpgraph_scatter.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/jpgraph/jpgraph_date.php');
 
 $jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/plot.data.json');
 $data = json_decode($jsonDataString, true);
@@ -8,41 +10,42 @@ $plot_data = $data['plot_data'];
 $xdata = $plot_data['x_array'];
 $ydata = $plot_data['y_array'];
 
-// Debug...
-// echo implode(',', $xdata);
-// echo nl2br("\n");
-// echo implode(',', $ydata);
-// echo nl2br("\n");
+// Refine xdata to unix timestamp
+$xTimeStamp = [];
+foreach ($xdata as $datetime) {
+  $xTimeStamp[] = strtotime($datetime);
+}
 
-// Width and height of the graph
-$width = 600;
-$height = 200;
+$width = 1200;
+$height = 350;
 
-// Create a graph instance
-$graph = new Graph($width, $height);
+$graph = new Graph($width, $height, "auto");
+$graph->img->SetMargin(110, 20, 35, 105);
+$graph->SetScale('datlin');
 
-// Specify what scale we want to use,
-// int = integer scale for the X-axis
-// int = integer scale for the Y-axis
-$graph->SetScale('intint', 0, 0, 0, max($xdata) - min($xdata) + 1);
+$graph->xaxis->SetTickLabels($xTimeStamp);
+$graph->xaxis->HideFirstTicklabel();
+$graph->xaxis->SetLabelAngle(35);
+$graph->yaxis->SetTitleMargin(50);
+$graph->yaxis->HideLine(false);
+$graph->yaxis->HideTicks(false, false);
 
-// Setup a title for the graph
-$graph->title->Set('Sunspot example');
+$graph->xgrid->Show();
+$graph->xgrid->SetLineStyle("solid");
 
-// Setup titles and X-axis labels
-$graph->xaxis->title->Set('(year from 1701)');
+$graph->title->Set('Temperature');
 
-// Setup Y-axis title
-$graph->yaxis->title->Set('(# sunspots)');
+// $graph->xaxis->title->Set('');
 
-// Create the linear plot
-$lineplot = new LinePlot($ydata);
+$graph->yaxis->title->Set('deg C');
 
-// Add the plot to the graph
-$graph->Add($lineplot);
-
-// Display the graph
+$plot = new ScatterPlot($ydata, $xTimeStamp);
+$plot->value->SetMargin(10);
+$plot->value->Show();
+$graph->Add($plot);
 $graph->Stroke($_SERVER['DOCUMENT_ROOT'] . '/profile/graph.png');
+
+// Output buffering
 ob_start();
-header("Location: /dataTransfer.php?jpgraph=graphGenerated");
+header("Location: /profile/plotData.prf.php?jpgraph=graphGenerated");
 ob_flush();

@@ -85,7 +85,6 @@ class DataTransfer extends DbHandler
           $this->jsonReplaceData($jsonKey, $plot_data, $jsonFileName);
 
           header("location: /profile/plotData.prf.php?result=dataReceived");
-          exit();
         }
       } else {
         header("location: /profile/plotData.prf.php?result=dataEmpty");

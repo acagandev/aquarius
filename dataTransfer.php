@@ -40,4 +40,4 @@ require($_SERVER['DOCUMENT_ROOT'] . '/classes/dataTransfer.class.php');
 
 $dataMap = new DataTransfer($projectID, $value1, $value2);
 
-$dataMap->uploadData();
+$dataMap->uploadDataDB();

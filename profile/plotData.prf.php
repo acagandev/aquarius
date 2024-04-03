@@ -141,24 +141,13 @@ if (isset($_GET["result"])) {
   }
 } elseif (isset($_GET["jpgraph"])) {
   if ($_GET["jpgraph"] == "graphGenerated") {
+
+    // Display generated graph
     echo <<<HTML
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display PNG Image</title>
-</head>
-<body>
-    <!-- Other HTML content -->
-
-    <!-- Display the PNG image -->
     <div>
-        <img src="/profile/graph2.png" alt="PNG Image">
+        <img src="/profile/graph.png" alt="PNG Image">
     </div>
-
-    <!-- Other HTML content -->
-</body>
 </html>
 HTML;
   }
