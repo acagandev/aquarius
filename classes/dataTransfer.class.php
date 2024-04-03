@@ -62,39 +62,36 @@ class DataTransfer extends DbHandler
   {
     $jsonKey = 'plot_data';
     $jsonFileName = 'plot.data';
-    $x_array = null;
-    $y_array = null;
+    $x_array = [];
+    $y_array = [];
 
     $stmt = $this->connectPD()->prepare('SELECT * FROM ' . $this->dataTable . ' WHERE measured >= :value1 AND measured <= :value2');
     $stmt->bindParam(':value1', $this->value1);
     $stmt->bindParam(':value2', $this->value2);
-
+    // echo $stmt;
     if ($stmt->execute()) {
 
-      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $x_value = $row['measured'];
-        $y_value = $row[$parameter];
-        $x_array[] = $x_value;
-        $y_array[] = $y_value;
+      if ($stmt->rowCount() > 0) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+          $x_value = $row['measured'];
+          $y_value = $row[$parameter];
+          $x_array[] = $x_value;
+          $y_array[] = $y_value;
+          $plot_data = array(
+            'x_array' => $x_array,
+            'y_array' => $y_array
+          );
+
+          $this->jsonReplaceData($jsonKey, $plot_data, $jsonFileName);
+
+          header("location: /profile/plotData.prf.php?result=dataReceived");
+          exit();
+        }
+      } else {
+        header("location: /profile/plotData.prf.php?result=dataEmpty");
       }
-
-      $plot_data = array(
-        'x_array' => $x_array,
-        'y_array' => $y_array
-      );
-
-      $this->jsonReplaceData($jsonKey, $plot_data, $jsonFileName);
-
-      echo 'Data saved to file successfully.';
     } else {
-      // Handle statement execution error
-    }
-
-    //  Error handler for empty array - not working, error thrown when date range is empty
-    if (!$x_array or !$y_array) {
-      echo "nothing to plot";
-    } else {
-      echo "ok";
+      header("location: /profile/plotData.prf.php?result=stmtFailed");
     }
   }
 
