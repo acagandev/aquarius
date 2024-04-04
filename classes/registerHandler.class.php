@@ -18,14 +18,8 @@ class RegisterHandler extends Register
     $this->passwordRepeat = $passwordRepeat;
   }
 
-  // ERROR HANDLER MESSAGES
   public function registerValidate()
   {
-    if ($this->loginTaken() == true) {
-      header("location: /register.php?error=loginTaken");
-      exit();
-    }
-
     if ($this->emptyInput() == true) {
       header("location: /register.php?error=emptyInput");
       exit();
@@ -37,14 +31,19 @@ class RegisterHandler extends Register
     }
 
     if ($this->invalidUsernameLength() == true) {
-      header("location: /register.php?error=invalidULenght");
+      header("location: /register.php?error=invalidULength");
       exit();
     }
 
-    // if ($this->invalidEmail() == true) {
-    //   header("location: ../register.php?error=invalidEmail");
-    //   exit();
-    // }
+    if ($this->invalidEmail() == true) {
+      header("location: ../register.php?error=invalidEmail");
+      exit();
+    }
+
+    if ($this->loginTaken() == true) {
+      header("location: /register.php?error=loginTaken");
+      exit();
+    }
 
     if ($this->passwordMismatch() == true) {
       header("location: /register.php?error=passwordMismatch");
@@ -53,7 +52,6 @@ class RegisterHandler extends Register
     $this->registerProceed($this->username, $this->email, $this->password);
   }
 
-  // ERROR HANDLER METHODS
   private function loginTaken()
   {
     $result = false;

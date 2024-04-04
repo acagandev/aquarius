@@ -6,9 +6,7 @@ class SigninHandler extends Signin
 {
 
   private $username;
-  // private $email;
   private $password;
-  // private $passwordRepeat;
 
   public function __construct($username, $password)
   {
@@ -16,16 +14,6 @@ class SigninHandler extends Signin
     $this->password = $password;
   }
 
-  public function signinValidate()
-  {
-    if ($this->emptyInput() == true) {
-      header("location: /signin.php?error=emptyInput");
-    }
-
-    $this->signinProceed($this->username, $this->password);
-  }
-
-  // Error handlers
   private function emptyInput()
   {
     $result = false;
@@ -35,5 +23,14 @@ class SigninHandler extends Signin
       $result = false;
     }
     return $result;
+  }
+
+  public function signinValidate()
+  {
+    if ($this->emptyInput() == true) {
+      header("location: /signin.php?error=emptyInput");
+    } else {
+      $this->signinProceed($this->username, $this->password);
+    }
   }
 }

@@ -1,3 +1,4 @@
+<!-- To be replaced by another functionality -->
 <?php
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');

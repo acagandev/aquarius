@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.0.3(3) - 04.04.2024
+
+- Major code fix and cleanup in **Sign in** and **Register** functionalities
+
 ## v0.0.2(2) - 24.02.2024
 
 - Added changelog.md

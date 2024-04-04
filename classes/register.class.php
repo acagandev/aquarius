@@ -13,7 +13,7 @@ class Register extends DbHandler
 
     if (!$stmt->execute(array($username, $email, $hashedPassword))) {
       $stmt = null;
-      header("location: /register.php?error=stmtfailed");
+      header("location: /register.php?error=stmtFailed");
       exit();
     }
 
@@ -22,14 +22,13 @@ class Register extends DbHandler
     header("location: /register.php?error=none");
   }
 
-  // ERROR HANDLER METHODS
   protected function userExists($username, $email)
   {
     $stmt = $this->connectUD()->prepare('SELECT uid FROM users WHERE username = ? OR email = ?;');
 
     if (!$stmt->execute(array($username, $email))) {
       $stmt = null;
-      header("location: /register.php?error=stmtfailed");
+      header("location: /register.php?error=stmtFailed");
       exit();
     }
 
