@@ -4,16 +4,16 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/jpgraph/jpgraph_line.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/jpgraph/jpgraph_scatter.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/jpgraph/jpgraph_date.php');
 
-$jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/plot.data.json');
-$data = json_decode($jsonDataString, true);
-$plot_data = $data['plot_data'];
-$xdata = $plot_data['x_array'];
-$ydata = $plot_data['y_array'];
+$jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/graph.data.json');
+$jsonData = json_decode($jsonDataString, true);
+$plotData = $jsonData['graph_data'];
+$xData = $plotData['x_array'];
+$yData = $plotData['y_array'];
 
-// Refine xdata to unix timestamp
+// Convert xData to unix timestamp
 $xTimeStamp = [];
-foreach ($xdata as $datetime) {
-  $xTimeStamp[] = strtotime($datetime);
+foreach ($xData as $dateTime) {
+  $xTimeStamp[] = strtotime($dateTime);
 }
 
 $width = 1200;
@@ -39,7 +39,7 @@ $graph->title->Set('Temperature');
 
 $graph->yaxis->title->Set('deg C');
 
-$plot = new ScatterPlot($ydata, $xTimeStamp);
+$plot = new ScatterPlot($yData, $xTimeStamp);
 $plot->value->SetMargin(10);
 $plot->value->Show();
 $graph->Add($plot);
@@ -47,5 +47,5 @@ $graph->Stroke($_SERVER['DOCUMENT_ROOT'] . '/profile/graph.png');
 
 // Output buffering
 ob_start();
-header("Location: /profile/plotData.prf.php?jpgraph=graphGenerated");
+header("Location: /profile/viewData.prf.php?jpgraph=graphGenerated");
 ob_flush();

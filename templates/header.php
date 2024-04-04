@@ -36,10 +36,10 @@ $currentUrl = $_SERVER['REQUEST_URI'];
           if (isset($_SESSION["username"])) {
             echo "<li><a href='/profile/profile.prf.php' class='button'>PROFILE</a></li>";
             echo "<li><a href='/includes/signout.inc.php' class='button'>LOGOUT</a></li>";
-            if (strpos($currentUrl, '/plotData.prf.php') !== false) {
-              // echo "<li><a href='/profile/plotData.prf.php?plot=true' class='button'>Plot Data</a></li>";
+            if (strpos($currentUrl, '/viewData.prf.php') !== false) {
+              // echo "<li><a href='/profile/viewData.prf.php?plot=true' class='button'>Plot Data</a></li>";
             } else {
-              echo "<li><a href='/profile/plotData.prf.php' class='button'>View Data</a></li>";
+              echo "<li><a href='/profile/viewData.prf.php' class='button'>View Data</a></li>";
             }
           } else {
             echo "<li><a href='/signin.php' class='button'>Sign in</a></li>";

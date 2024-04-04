@@ -1,16 +1,17 @@
 <?php
 ob_start();
 include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/header.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/includes/downloadDataDB.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dataTransfer.class.php');
 
 $showTables = new DataTransfer();
 $showColumns = new DataTransfer();
-$showTables->getTablesDB();
+$showTables->getTableNames();
 
-$jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/plot.data.json');
-$data = json_decode($jsonDataString, true);
-$tableList = $data['table_names'];
-$columnList = $data['column_names'];
+$jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/graph.data.json');
+$jsonData = json_decode($jsonDataString, true);
+$tableList = $jsonData['table_names'];
+$columnList = $jsonData['column_names'];
 ob_end_flush();
 ?>
 
@@ -26,21 +27,18 @@ ob_end_flush();
         if (isset($_POST['tableSelectList'])) {
 
           $tbl = $_POST['tableSelectList'];
-          $showColumns->getRowsInTable($tbl);
-          $jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/plot.data.json');
-          $data = json_decode($jsonDataString, true);
-          $columnList = $data['column_names'];
-          echo "You selected: " . $tbl;
-        } else {
-          echo "No table selected!";
+          $showColumns->getColumnNames($tbl);
+          $jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/graph.data.json');
+          $jsonData = json_decode($jsonDataString, true);
+          $columnList = $jsonData['column_names'];
         }
 
-        foreach ($tableList as $table_name) {
+        foreach ($tableList as $tableName) {
           $selected = '';
-          if (isset($_POST['tableSelectList']) && $_POST['tableSelectList'] == $table_name) {
+          if (isset($_POST['tableSelectList']) && $_POST['tableSelectList'] == $tableName) {
             $selected = 'selected="selected"';
           }
-          echo "<option value=\"$table_name\" $selected>$table_name</option>";
+          echo "<option value=\"$tableName\" $selected>$tableName</option>";
         }
         ?>
 
@@ -49,24 +47,24 @@ ob_end_flush();
   </form>
 </div>
 <div>
-  <form id="columnSelectForm" action="/includes/plotData.inc.php" method="post" onsubmit="return validateForm()">
+  <form id="columnSelectForm" action="/includes/viewData.inc.php" method="post" onsubmit="return validateForm()">
     <label for="columnList">Choose parameter:</label>
     <select name="columnSelectList" id="columnSelectList">
       <option value="" disabled selected>Select an option</option>
 
       <?php
-      foreach ($columnList as $column_name) {
+      foreach ($columnList as $columnName) {
         $selected = '';
-        if (isset($_POST['columnSelectList']) && $_POST['columnSelectList'] == $column_name) {
+        if (isset($_POST['columnSelectList']) && $_POST['columnSelectList'] == $columnName) {
           $selected = 'selected="selected"';
         }
-        echo "<option value=\"$column_name\" $selected>$column_name</option>";
+        echo "<option value=\"$columnName\" $selected>$columnName</option>";
       }
       ?>
 
     </select>
 </div>
-<button type="submit" id="submitBtn1" style="display: none;"></button>
+<!-- <button type="submit" id="submitBtn2" style="display: none;"></button> -->
 <div>
   <label for="datetime">From:</label>
   <input type="datetime-local" id="startDate" name="startDate">
@@ -103,7 +101,7 @@ ob_end_flush();
     });
   }
   attachChangeEvent('tableSelectList', 'submitBtn1');
-  attachChangeEvent('columnSelectList', 'submitBtn2');
+  // attachChangeEvent('columnSelectList', 'submitBtn2');
 </script>
 
 <!-- Prevent form from being submitted before all selections are made -->
@@ -136,8 +134,10 @@ if (isset($_GET["result"])) {
   } elseif ($_GET["result"] == "dataReceived") {
     echo "<p>Generating plot...</p>";
     include_once($_SERVER['DOCUMENT_ROOT'] . '/includes/generateGraph.inc.php');
-  } elseif ($_GET["result"] == "stmtFailed") {
-    echo "<p>Database error.</p>";
+  }
+} elseif (isset($_GET["error"])) {
+  if ($_GET["error"] == "stmtFailed") {
+    // TBD
   }
 } elseif (isset($_GET["jpgraph"])) {
   if ($_GET["jpgraph"] == "graphGenerated") {
@@ -154,5 +154,3 @@ HTML;
 }
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/footer.php');
-
-?>

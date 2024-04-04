@@ -60,44 +60,43 @@ class DataTransfer extends DbHandler
 
   public function downloadDataDB($parameter)
   {
-    $jsonKey = 'plot_data';
-    $jsonFileName = 'plot.data';
-    $x_array = [];
-    $y_array = [];
+    $jsonKey = 'graph_data';
+    $jsonFileName = 'graph.data';
+    $xData = [];
+    $yData = [];
 
     $stmt = $this->connectPD()->prepare('SELECT * FROM ' . $this->dataTable . ' WHERE measured >= :value1 AND measured <= :value2');
     $stmt->bindParam(':value1', $this->value1);
     $stmt->bindParam(':value2', $this->value2);
-    // echo $stmt;
     if ($stmt->execute()) {
 
-      if ($stmt->rowCount() > 0) {
+      if ($stmt->rowCount() > 0) { // Maybe 1 due to jpgraph unable to work with 1 value
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-          $x_value = $row['measured'];
-          $y_value = $row[$parameter];
-          $x_array[] = $x_value;
-          $y_array[] = $y_value;
-          $plot_data = array(
-            'x_array' => $x_array,
-            'y_array' => $y_array
+          $xValue = $row['measured'];
+          $yValue = $row[$parameter];
+          $xData[] = $xValue;
+          $yData[] = $yValue;
+          $plotData = array(
+            'x_array' => $xData,
+            'y_array' => $yData
           );
 
-          $this->jsonReplaceData($jsonKey, $plot_data, $jsonFileName);
+          $this->jsonReplaceData($jsonKey, $plotData, $jsonFileName);
 
-          header("location: /profile/plotData.prf.php?result=dataReceived");
+          header("location: /profile/viewData.prf.php?result=dataReceived");
         }
       } else {
-        header("location: /profile/plotData.prf.php?result=dataEmpty");
+        header("location: /profile/viewData.prf.php?result=dataEmpty");
       }
     } else {
-      header("location: /profile/plotData.prf.php?result=stmtFailed");
+      header("location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
 
-  public function getTablesDB()
+  public function getTableNames()
   {
     $jsonKey = 'table_names';
-    $jsonFileName = 'plot.data';
+    $jsonFileName = 'graph.data';
 
     $stmt = $this->connectPD()->prepare('SHOW TABLES');
 
@@ -105,40 +104,38 @@ class DataTransfer extends DbHandler
 
       $tables = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-      $table_names = [];
+      $tableNames = [];
       foreach ($tables as $table) {
-        $table_names[] = reset($table);
+        $tableNames[] = reset($table);
       }
 
-      $this->jsonReplaceData($jsonKey, $table_names, $jsonFileName);
+      $this->jsonReplaceData($jsonKey, $tableNames, $jsonFileName);
     } else {
-      $errorInfo = $stmt->errorInfo();
-      echo "Error: " . $errorInfo[2];
+      header("location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
 
-  public function getRowsInTable($table_name)
+  public function getColumnNames($tableName)
   {
     $jsonKey = 'column_names';
-    $jsonFileName = 'plot.data';
+    $jsonFileName = 'graph.data';
 
-    $stmt = $this->connectPD()->prepare("DESCRIBE $table_name");
+    $stmt = $this->connectPD()->prepare("DESCRIBE $tableName");
 
     if ($stmt->execute()) {
 
-      $rows = $stmt->fetchAll(PDO::FETCH_COLUMN);
+      $columns = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-      $row_names = [];
-      foreach ($rows as $row) {
-        if ($row != "id" and $row != "measured") {
-          $row_names[] = $row;
+      $columnNames = [];
+      foreach ($columns as $column) {
+        if ($column != "id" and $column != "measured") {
+          $columnNames[] = $column;
         }
       }
 
-      $this->jsonReplaceData($jsonKey, $row_names, $jsonFileName);
+      $this->jsonReplaceData($jsonKey, $columnNames, $jsonFileName);
     } else {
-      $errorInfo = $stmt->errorInfo();
-      echo "Error: " . $errorInfo[2];
+      header("location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
 }

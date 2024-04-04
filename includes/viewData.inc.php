@@ -6,8 +6,7 @@ if (isset($_POST['submit'])) {
   $startDate = $_POST["startDate"];
   $stopDate = $_POST["stopDate"];
 
-  include($_SERVER['DOCUMENT_ROOT'] . '/classes/dataTransfer.class.php');
-  include($_SERVER['DOCUMENT_ROOT'] . '/classes/plotData.class.php');
+  require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dataTransfer.class.php');
 
   $downloadedData = new DataTransfer($table, $parameter, $startDate, $stopDate);
   $downloadedData->downloadDataDB($parameter);
