@@ -1,9 +1,7 @@
 <?php
-// session_start();
 
-// include_once './includes/dbh.inc.php';
 include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/header.php');
-// include_once './includes/data-handler.inc.php';
+
 ?>
 
 <!DOCTYPE html>

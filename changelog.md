@@ -1,4 +1,7 @@
 # Changelog
+## v0.2.0(x) - 0x.0x.2024
+- Development branch
+
 ## v0.1.0(4) - 04.04.2024
 ### Major update:
 - Added **View** button with *view graph with selected data from database* functionality 

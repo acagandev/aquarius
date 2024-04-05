@@ -1,23 +1,20 @@
-<!-- To be replaced by another functionality -->
 <?php
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
 class DataTransfer extends DbHandler
 {
   private $dataTable;
-  private $parameter;
   private $value1;
   private $value2;
+  private $value3;
 
-  public function __construct($dataTable = null, $parameter = null, $value1 = null, $value2 = null)
+  public function __construct($dataTable = null, $value1 = null, $value2 = null, $value3 = null)
   {
     $this->dataTable = $dataTable;
-    $this->$parameter = $parameter;
     $this->value1 = $value1;
     $this->value2 = $value2;
+    $this->value3 = $value3;
   }
-
-  // http://localhost/aquarius/dataTransfer.php?dataTable=temperature&value1=tempWater&value2=24.4
 
   public function uploadDataDB()
   {
@@ -25,25 +22,31 @@ class DataTransfer extends DbHandler
 
     if (!$stmt->execute()) {
       $stmt = null;
-      header("Location: /dataTransfer.php?error=projectNotFound");
+      header("Location: /dataTransfer.php?error=tableNotFound");
       exit();
     }
 
-    // $query = 'INSERT INTO ' . $this->dataTable . ' (' . $this->value1 . ') VALUES (' . $this->value2 . ');';
-    // print_r($query);
+    $columnString = implode(", ", $this->value1);
+    $valuePlaceholders = implode(", ", array_fill(0, count($this->value2), '?'));
 
-    // $stmt = $this->connectPD()->prepare($query);
-    $stmt = $this->connectPD()->prepare('INSERT INTO ' . $this->dataTable . ' (' . $this->value1 . ') VALUES (' . $this->value2 . ');');
+    $sql = 'INSERT INTO ' . $this->dataTable . ' (' . $columnString . ') VALUES (' . $valuePlaceholders . ')';
+
+    $stmt = $this->connectPD()->prepare($sql);
+
+    $i = 1;
+    foreach ($this->value2 as $value) {
+      $stmt->bindValue($i++, $value);
+    }
 
     if (!$stmt->execute()) {
       $stmt = null;
-      header("Location: /dataTransfer.php?error=stmtfailed");
+      header("Location: /dataTransfer.php?error=stmtFailed");
       exit();
     }
 
     $stmt = null;
 
-    header("Location: /dataTransfer.php?error=dataUploadOK");
+    header("Location: /dataTransfer.php?error=none");
     exit();
   }
 
@@ -59,22 +62,22 @@ class DataTransfer extends DbHandler
     file_put_contents($filePath, $newJsonString);
   }
 
-  public function downloadDataDB($parameter)
+  public function downloadDataDB($value1)
   {
     $jsonKey = 'graph_data';
     $jsonFileName = 'graph.data';
     $xData = [];
     $yData = [];
 
-    $stmt = $this->connectPD()->prepare('SELECT * FROM ' . $this->dataTable . ' WHERE measured >= :value1 AND measured <= :value2');
-    $stmt->bindParam(':value1', $this->value1);
-    $stmt->bindParam(':value2', $this->value2);
+    $stmt = $this->connectPD()->prepare('SELECT * FROM ' . $this->dataTable . ' WHERE measured >= :startDate AND measured <= :stopDate');
+    $stmt->bindParam(':startDate', $this->value2);
+    $stmt->bindParam(':stopDate', $this->value3);
     if ($stmt->execute()) {
 
       if ($stmt->rowCount() > 0) { // Maybe 1 due to jpgraph unable to work with 1 value
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
           $xValue = $row['measured'];
-          $yValue = $row[$parameter];
+          $yValue = $row[$value1];
           $xData[] = $xValue;
           $yData[] = $yValue;
           $plotData = array(
@@ -83,13 +86,15 @@ class DataTransfer extends DbHandler
           );
 
           $this->jsonReplaceData($jsonKey, $plotData, $jsonFileName);
-
+          $stmt = null;
           header("location: /profile/viewData.prf.php?result=dataReceived");
         }
       } else {
+        $stmt = null;
         header("location: /profile/viewData.prf.php?result=dataEmpty");
       }
     } else {
+      $stmt = null;
       header("location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
@@ -111,7 +116,9 @@ class DataTransfer extends DbHandler
       }
 
       $this->jsonReplaceData($jsonKey, $tableNames, $jsonFileName);
+      $stmt = null;
     } else {
+      $stmt = null;
       header("location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
@@ -135,7 +142,9 @@ class DataTransfer extends DbHandler
       }
 
       $this->jsonReplaceData($jsonKey, $columnNames, $jsonFileName);
+      $stmt = null;
     } else {
+      $stmt = null;
       header("location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }

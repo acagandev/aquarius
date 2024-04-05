@@ -1,1 +1,1 @@
-{"table_names":["tds","temperature"],"column_names":["tempWater","tempAmbient"],"graph_data":{"x_array":["2024-04-01 09:52:54","2024-04-01 23:53:02","2024-04-02 09:58:33","2024-04-02 21:58:33","2024-04-03 08:43:56"],"y_array":[22.8,31,18.8,22,31]}}
+{"table_names":["tds","temperature"],"column_names":["tempWater","tempAmbient"],"graph_data":{"x_array":["2024-04-01 23:53:02"],"y_array":[31]}}
