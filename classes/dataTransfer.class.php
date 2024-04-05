@@ -1,4 +1,3 @@
-<!-- To be replaced by another functionality -->
 <?php
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
@@ -17,58 +16,37 @@ class DataTransfer extends DbHandler
     $this->value3 = $value3;
   }
 
-  // http://localhost/aquarius/dataTransfer.php?dataTable=temperature&value1=tempWater&value2=24.4
-
   public function uploadDataDB()
   {
     $stmt = $this->connectPD()->prepare('DESCRIBE ' . $this->dataTable . ';');
 
     if (!$stmt->execute()) {
       $stmt = null;
-      header("Location: /dataTransfer.php?error=projectNotFound");
+      header("Location: /dataTransfer.php?error=tableNotFound");
       exit();
     }
 
-    // Refine statement values
-    // if (is_array($this->value1)) {
-    //   $columnString = implode(", ", $this->value1);
-    // } else {
-    //   $columnString = $this->value1;
-    // }
-
-    // if (is_array($this->value2)) {
-    //   $valueString = implode(", ", $this->value2);
-    // } else {
-    //   $valueString = $this->value2;
-    // }
-
-    // ChatGPT solution
-    // $columnString = implode(", ", array_keys($this->value1));
     $columnString = implode(", ", $this->value1);
     $valuePlaceholders = implode(", ", array_fill(0, count($this->value2), '?'));
 
     $sql = 'INSERT INTO ' . $this->dataTable . ' (' . $columnString . ') VALUES (' . $valuePlaceholders . ')';
 
-    // Prepare the SQL statement
     $stmt = $this->connectPD()->prepare($sql);
 
-    // Bind parameters
     $i = 1;
     foreach ($this->value2 as $value) {
       $stmt->bindValue($i++, $value);
     }
 
-    // $stmt = $this->connectPD()->prepare('INSERT INTO ' . $this->dataTable . ' (' . $columnString . ') VALUES (' . $valueString . ');');
-
     if (!$stmt->execute()) {
       $stmt = null;
-      header("Location: /dataTransfer.php?error=stmtfailed");
+      header("Location: /dataTransfer.php?error=stmtFailed");
       exit();
     }
 
     $stmt = null;
 
-    header("Location: /dataTransfer.php?error=dataUploadOK");
+    header("Location: /dataTransfer.php?error=none");
     exit();
   }
 
@@ -108,13 +86,15 @@ class DataTransfer extends DbHandler
           );
 
           $this->jsonReplaceData($jsonKey, $plotData, $jsonFileName);
-
+          $stmt = null;
           header("location: /profile/viewData.prf.php?result=dataReceived");
         }
       } else {
+        $stmt = null;
         header("location: /profile/viewData.prf.php?result=dataEmpty");
       }
     } else {
+      $stmt = null;
       header("location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
@@ -136,7 +116,9 @@ class DataTransfer extends DbHandler
       }
 
       $this->jsonReplaceData($jsonKey, $tableNames, $jsonFileName);
+      $stmt = null;
     } else {
+      $stmt = null;
       header("location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
@@ -160,7 +142,9 @@ class DataTransfer extends DbHandler
       }
 
       $this->jsonReplaceData($jsonKey, $columnNames, $jsonFileName);
+      $stmt = null;
     } else {
+      $stmt = null;
       header("location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
