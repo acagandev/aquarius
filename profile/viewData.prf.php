@@ -84,45 +84,45 @@ ob_end_flush();
 
 <!-- Disable default option "Select an option" -->
 <script>
-  function removeDefaultOption() {
-    var defaultOption = document.querySelector('#columnSelectList option[value=""]');
-    defaultOption.remove();
-  }
+function removeDefaultOption() {
+  var defaultOption = document.querySelector('#columnSelectList option[value=""]');
+  defaultOption.remove();
+}
 </script>
 
 <!-- Automatically submit first form -->
 <script>
-  function attachChangeEvent(selectId, submitBtnId) {
-    const selectElement = document.getElementById(selectId);
-    const submitButton = document.getElementById(submitBtnId);
+function attachChangeEvent(selectId, submitBtnId) {
+  const selectElement = document.getElementById(selectId);
+  const submitButton = document.getElementById(submitBtnId);
 
-    selectElement.addEventListener('change', function() {
-      submitButton.click();
-    });
-  }
-  attachChangeEvent('tableSelectList', 'submitBtn1');
-  // attachChangeEvent('columnSelectList', 'submitBtn2');
+  selectElement.addEventListener('change', function() {
+    submitButton.click();
+  });
+}
+attachChangeEvent('tableSelectList', 'submitBtn1');
+// attachChangeEvent('columnSelectList', 'submitBtn2');
 </script>
 
 <!-- Prevent form from being submitted before all selections are made -->
 <script>
-  function validateForm() {
-    var tableSelectedList = document.getElementById('tableSelectList');
-    var columnSelectList = document.getElementById('columnSelectList');
-    var startDate = document.getElementById('startDate');
-    var stopDate = document.getElementById('stopDate');
+function validateForm() {
+  var tableSelectedList = document.getElementById('tableSelectList');
+  var columnSelectList = document.getElementById('columnSelectList');
+  var startDate = document.getElementById('startDate');
+  var stopDate = document.getElementById('stopDate');
 
-    if (tableSelectList.value === '' ||
-      tableSelectList.value === 'Select an option' ||
-      columnSelectList.value === '' ||
-      columnSelectList.value === 'Select an option' ||
-      startDate.value === '' ||
-      stopDate.value === '') {
-      alert('Please fill out all required fields.');
-      return false;
-    }
-    return true;
+  if (tableSelectList.value === '' ||
+    tableSelectList.value === 'Select an option' ||
+    columnSelectList.value === '' ||
+    columnSelectList.value === 'Select an option' ||
+    startDate.value === '' ||
+    stopDate.value === '') {
+    alert('Please fill out all required fields.');
+    return false;
   }
+  return true;
+}
 </script>
 
 
@@ -137,7 +137,7 @@ if (isset($_GET["result"])) {
   }
 } elseif (isset($_GET["error"])) {
   if ($_GET["error"] == "stmtFailed") {
-    // TBD
+    echo "<p>There was an error with the database, try again later.</p>";
   }
 } elseif (isset($_GET["jpgraph"])) {
   if ($_GET["jpgraph"] == "graphGenerated") {
