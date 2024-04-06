@@ -11,14 +11,14 @@ class Signin extends DbHandler
 
     if (!$stmt->execute(array($username))) {
       $stmt = null;
-      header("location: /signin.php?error=stmtFailed");
+      header("Location: /signin.php?error=stmtFailed");
       exit();
     }
 
     if ($stmt->rowCount() == 0) {
 
       $stmt = null;
-      header("location: /signin.php?error=userNotFound");
+      header("Location: /signin.php?error=userNotFound");
       exit();
     }
 
@@ -27,14 +27,14 @@ class Signin extends DbHandler
 
     if ($checkPassword == false) {
       $stmt = null;
-      header("location: /signin.php?error=wrongCredentials");
+      header("Location: /signin.php?error=wrongCredentials");
       exit();
     } elseif ($checkPassword == true) {
       $stmt = $this->connectUD()->prepare('SELECT * FROM users WHERE username = ? AND password = ?;');
 
       if (!$stmt->execute(array($username, $passwordHashed[0]["password"]))) {
         $stmt = null;
-        header("location: /signin.php?error=stmtFailed");
+        header("Location: /signin.php?error=stmtFailed");
         exit();
       }
 
@@ -42,13 +42,14 @@ class Signin extends DbHandler
       if (count($loginData) == 0) {
 
         $stmt = null;
-        header("location: /signin.php?error=wrongCredentials");
+        header("Location: /signin.php?error=wrongCredentials");
         exit();
       }
 
       session_start();
       $_SESSION["username"] = $loginData[0]["username"];
-      header("location: /profile/profile.prf.php");
+      $_SESSION["loginTimeStamp"] = time();
+      header("Location: /profile/profile.prf.php");
     }
 
     $stmt = null;

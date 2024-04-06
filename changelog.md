@@ -1,4 +1,9 @@
 # Changelog
+## v0.2.1(6) - 06.04.2024
+### Security update:
+- Added automatic log out after 20 minutes (session time out in `localhost/templates/header.php`)
+- .*.php pages are protected from access for not logged in users
+
 ## v0.2.0(5) - 05.04.2024
 - Added functionality for receiving data from ESP32 via `localhost/dataHandler.php`
 

@@ -1,8 +1,25 @@
 <?php
 session_start();
 
-require($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php');
 $currentUrl = $_SERVER['REQUEST_URI'];
+
+// Prevent access to login-only pages
+if (!isset($_SESSION["username"]) && (preg_match('/\..+\.php/', $currentUrl))) {
+  header('Location: /index.php');
+  exit();
+}
+
+// Log out user after 20 minutes of inactivity
+if (isset($_SESSION["username"]) && (time() - $_SESSION["loginTimeStamp"] > 1200)) {
+  session_unset();
+  session_destroy();
+
+  header('Location: /index.php', true, 302);
+  exit();
+} else {
+  $_SESSION["loginTimeStamp"] = time();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -35,9 +52,8 @@ $currentUrl = $_SERVER['REQUEST_URI'];
           <?php
           if (isset($_SESSION["username"])) {
             echo "<li><a href='/profile/profile.prf.php' class='button'>PROFILE</a></li>";
-            echo "<li><a href='/includes/signout.inc.php' class='button'>LOGOUT</a></li>";
+            echo "<li><a href='/includes/signout.inc.php' class='button'>LOG OUT</a></li>";
             if (strpos($currentUrl, '/viewData.prf.php') !== false) {
-              // echo "<li><a href='/profile/viewData.prf.php?plot=true' class='button'>Plot Data</a></li>";
             } else {
               echo "<li><a href='/profile/viewData.prf.php' class='button'>View Data</a></li>";
             }

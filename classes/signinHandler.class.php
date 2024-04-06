@@ -28,7 +28,7 @@ class SigninHandler extends Signin
   public function signinValidate()
   {
     if ($this->emptyInput() == true) {
-      header("location: /signin.php?error=emptyInput");
+      header("Location: /signin.php?error=emptyInput");
     } else {
       $this->signinProceed($this->username, $this->password);
     }

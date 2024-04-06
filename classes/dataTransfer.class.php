@@ -87,15 +87,15 @@ class DataTransfer extends DbHandler
 
           $this->jsonReplaceData($jsonKey, $plotData, $jsonFileName);
           $stmt = null;
-          header("location: /profile/viewData.prf.php?result=dataReceived");
+          header("Location: /profile/viewData.prf.php?result=dataReceived");
         }
       } else {
         $stmt = null;
-        header("location: /profile/viewData.prf.php?result=dataEmpty");
+        header("Location: /profile/viewData.prf.php?result=dataEmpty");
       }
     } else {
       $stmt = null;
-      header("location: /profile/viewData.prf.php?error=stmtFailed");
+      header("Location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
 
@@ -119,7 +119,7 @@ class DataTransfer extends DbHandler
       $stmt = null;
     } else {
       $stmt = null;
-      header("location: /profile/viewData.prf.php?error=stmtFailed");
+      header("Location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
 
@@ -145,7 +145,7 @@ class DataTransfer extends DbHandler
       $stmt = null;
     } else {
       $stmt = null;
-      header("location: /profile/viewData.prf.php?error=stmtFailed");
+      header("Location: /profile/viewData.prf.php?error=stmtFailed");
     }
   }
 }

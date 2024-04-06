@@ -21,32 +21,32 @@ class RegisterHandler extends Register
   public function registerValidate()
   {
     if ($this->emptyInput() == true) {
-      header("location: /register.php?error=emptyInput");
+      header("Location: /register.php?error=emptyInput");
       exit();
     }
 
     if ($this->invalidUsernameChar() == true) {
-      header("location: /register.php?error=invalidUChar");
+      header("Location: /register.php?error=invalidUChar");
       exit();
     }
 
     if ($this->invalidUsernameLength() == true) {
-      header("location: /register.php?error=invalidULength");
+      header("Location: /register.php?error=invalidULength");
       exit();
     }
 
     if ($this->invalidEmail() == true) {
-      header("location: ../register.php?error=invalidEmail");
+      header("Location: ../register.php?error=invalidEmail");
       exit();
     }
 
     if ($this->loginTaken() == true) {
-      header("location: /register.php?error=loginTaken");
+      header("Location: /register.php?error=loginTaken");
       exit();
     }
 
     if ($this->passwordMismatch() == true) {
-      header("location: /register.php?error=passwordMismatch");
+      header("Location: /register.php?error=passwordMismatch");
       exit();
     }
     $this->registerProceed($this->username, $this->email, $this->password);

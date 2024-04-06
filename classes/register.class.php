@@ -13,13 +13,13 @@ class Register extends DbHandler
 
     if (!$stmt->execute(array($username, $email, $hashedPassword))) {
       $stmt = null;
-      header("location: /register.php?error=stmtFailed");
+      header("Location: /register.php?error=stmtFailed");
       exit();
     }
 
     $stmt = null;
 
-    header("location: /register.php?error=none");
+    header("Location: /register.php?error=none");
   }
 
   protected function userExists($username, $email)
@@ -28,7 +28,7 @@ class Register extends DbHandler
 
     if (!$stmt->execute(array($username, $email))) {
       $stmt = null;
-      header("location: /register.php?error=stmtFailed");
+      header("Location: /register.php?error=stmtFailed");
       exit();
     }
 

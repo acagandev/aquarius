@@ -6,12 +6,13 @@ Aquarius project is designed to regulate water temperature of aquarium based on 
 
 This section describes functionalities in current release of Aquarius Web.
 
-### **Web UI 0.2.0**
+### **Web UI 0.2.1**
 
 - Sign in system
 - Registration system
 - Viewing graph of selected data in database via on Profile > View tab
 - Receive and upload data into database via `localhost/dataHandler.php`
+- Automatic log out after 20 minutes & access protection for login-only pages
 - PHP 8.3.4
 
 #### Database structure:
