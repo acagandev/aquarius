@@ -2,3 +2,5 @@
 .htdocs
 img
 jpgraph/Examples
+profile/*.png
+json/*

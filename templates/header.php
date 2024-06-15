@@ -56,6 +56,7 @@ if (isset($_SESSION["username"]) && (time() - $_SESSION["loginTimeStamp"] > 1200
             if (strpos($currentUrl, '/viewData.prf.php') !== false) {
             } else {
               echo "<li><a href='/profile/viewData.prf.php' class='button'>View Data</a></li>";
+              echo "<li><a href='/profile/settings.prf.php' class='button'>Settings</a></li>";
             }
           } else {
             echo "<li><a href='/signin.php' class='button'>Sign in</a></li>";
