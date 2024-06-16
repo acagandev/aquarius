@@ -6,7 +6,7 @@ Aquarius project is designed to regulate water temperature of aquarium based on 
 
 This section describes functionalities in current release of Aquarius Web.
 
-### **Web UI 0.2.2**
+### **Web UI 0.3.0**
 
 - Sign in system
 - Registration system

@@ -1,5 +1,4 @@
 <?php
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/signin.class.php');
 
 class SigninHandler extends Signin

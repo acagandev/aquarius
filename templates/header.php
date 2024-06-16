@@ -23,7 +23,7 @@ if (isset($_SESSION["username"]) && (time() - $_SESSION["loginTimeStamp"] > 1200
 ?>
 
 <!DOCTYPE html>
-<html lang="sk">
+<html lang="en">
 <base href="~/" />
 
 <head>

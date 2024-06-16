@@ -1,6 +1,6 @@
 <?php
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
+
 class DataTransfer extends DbHandler
 {
   private $dataTable;
@@ -74,7 +74,7 @@ class DataTransfer extends DbHandler
     $stmt->bindParam(':stopDate', $this->value3);
     if ($stmt->execute()) {
 
-      if ($stmt->rowCount() > 0) { // Maybe 1 due to jpgraph unable to work with 1 value
+      if ($stmt->rowCount() > 0) {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
           $xValue = $row['measured'];
           $yValue = $row[$value1];
@@ -84,11 +84,11 @@ class DataTransfer extends DbHandler
             'x_array' => $xData,
             'y_array' => $yData
           );
-
-          $this->jsonReplaceData($jsonKey, $plotData, $jsonFileName);
-          $stmt = null;
-          header("Location: /profile/viewData.prf.php?result=dataReceived");
         }
+
+        $this->jsonReplaceData($jsonKey, $plotData, $jsonFileName);
+        $stmt = null;
+        header("Location: /profile/viewData.prf.php?result=dataReceived");
       } else {
         $stmt = null;
         header("Location: /profile/viewData.prf.php?result=dataEmpty");

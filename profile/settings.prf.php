@@ -39,14 +39,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dataTransfer.class.php');
       <label for="time">Select lighting time from:</label>
       <input type="time" id="startDate" name="startDate">
       <label for="time">To:</label>
-      <input type="time" id="stopDate" name="stopDate" value="<?php ob_start();
-                                                              echo date('Y-m-d\TH:i');
-                                                              ob_end_flush(); ?>">
+      <input type="time" id="stopDate" name="stopDate" value="<?php echo date('Y-m-d\TH:i'); ?>">
     </div>
     <div>
-      <input type="hidden" name="selectedTable" value="<?php ob_start();
-                                                        echo $tbl;
-                                                        ob_flush() ?>">
+      <input type="hidden" name="selectedTable" value="<?php echo $tbl; ?>">
       <button type="submit" name="submit">Set</button>
     </div>
   </form>
@@ -57,3 +53,4 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dataTransfer.class.php');
 
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/footer.php');
+ob_flush();

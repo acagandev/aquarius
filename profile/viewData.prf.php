@@ -12,7 +12,6 @@ $jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/graph.dat
 $jsonData = json_decode($jsonDataString, true);
 $tableList = $jsonData['table_names'];
 $columnList = $jsonData['column_names'];
-ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -69,14 +68,10 @@ ob_end_flush();
   <label for="datetime">From:</label>
   <input type="datetime-local" id="startDate" name="startDate">
   <label for="datetime">To:</label>
-  <input type="datetime-local" id="stopDate" name="stopDate" value="<?php ob_start();
-                                                                    echo date('Y-m-d\TH:i');
-                                                                    ob_end_flush(); ?>">
+  <input type="datetime-local" id="stopDate" name="stopDate" value="<?php echo date('Y-m-d\TH:i'); ?>">
 </div>
 <div>
-  <input type="hidden" name="selectedTable" value="<?php ob_start();
-                                                    echo $tbl;
-                                                    ob_flush() ?>">
+  <input type="hidden" name="selectedTable" value="<?php echo $tbl; ?>">
   <button type="submit" name="submit">Plot</button>
 </div>
 </form>
@@ -84,47 +79,46 @@ ob_end_flush();
 
 <!-- Disable default option "Select an option" -->
 <script>
-function removeDefaultOption() {
-  var defaultOption = document.querySelector('#columnSelectList option[value=""]');
-  defaultOption.remove();
-}
+  function removeDefaultOption() {
+    var defaultOption = document.querySelector('#columnSelectList option[value=""]');
+    defaultOption.remove();
+  }
 </script>
 
 <!-- Automatically submit first form -->
 <script>
-function attachChangeEvent(selectId, submitBtnId) {
-  const selectElement = document.getElementById(selectId);
-  const submitButton = document.getElementById(submitBtnId);
+  function attachChangeEvent(selectId, submitBtnId) {
+    const selectElement = document.getElementById(selectId);
+    const submitButton = document.getElementById(submitBtnId);
 
-  selectElement.addEventListener('change', function() {
-    submitButton.click();
-  });
-}
-attachChangeEvent('tableSelectList', 'submitBtn1');
-// attachChangeEvent('columnSelectList', 'submitBtn2');
+    selectElement.addEventListener('change', function() {
+      submitButton.click();
+    });
+  }
+  attachChangeEvent('tableSelectList', 'submitBtn1');
+  // attachChangeEvent('columnSelectList', 'submitBtn2');
 </script>
 
 <!-- Prevent form from being submitted before all selections are made -->
 <script>
-function validateForm() {
-  var tableSelectedList = document.getElementById('tableSelectList');
-  var columnSelectList = document.getElementById('columnSelectList');
-  var startDate = document.getElementById('startDate');
-  var stopDate = document.getElementById('stopDate');
+  function validateForm() {
+    var tableSelectedList = document.getElementById('tableSelectList');
+    var columnSelectList = document.getElementById('columnSelectList');
+    var startDate = document.getElementById('startDate');
+    var stopDate = document.getElementById('stopDate');
 
-  if (tableSelectList.value === '' ||
-    tableSelectList.value === 'Select an option' ||
-    columnSelectList.value === '' ||
-    columnSelectList.value === 'Select an option' ||
-    startDate.value === '' ||
-    stopDate.value === '') {
-    alert('Please fill out all required fields.');
-    return false;
+    if (tableSelectList.value === '' ||
+      tableSelectList.value === 'Select an option' ||
+      columnSelectList.value === '' ||
+      columnSelectList.value === 'Select an option' ||
+      startDate.value === '' ||
+      stopDate.value === '') {
+      alert('Please fill out all required fields.');
+      return false;
+    }
+    return true;
   }
-  return true;
-}
 </script>
-
 
 <?php
 
@@ -154,3 +148,4 @@ HTML;
 }
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/footer.php');
+ob_flush();

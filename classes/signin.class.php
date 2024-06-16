@@ -1,5 +1,4 @@
 <?php
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
 
 class Signin extends DbHandler

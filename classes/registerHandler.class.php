@@ -1,5 +1,4 @@
 <?php
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/register.class.php');
 
 class RegisterHandler extends Register

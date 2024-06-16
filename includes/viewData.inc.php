@@ -1,5 +1,4 @@
 <?php
-
 if (isset($_POST['submit'])) {
   $table = $_POST["selectedTable"];
   $parameter = $_POST["columnSelectList"];
