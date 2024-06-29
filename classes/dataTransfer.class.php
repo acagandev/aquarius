@@ -54,8 +54,11 @@ class DataTransfer extends DbHandler
   {
     $filePath = ($_SERVER['DOCUMENT_ROOT'] . '/json/' . $fileName . '.json');
 
-    $jsonString = file_get_contents($filePath);
-    $data = json_decode($jsonString, true);
+    if (file_exists($filePath)) {
+      $jsonString = file_get_contents($filePath);
+      $data = json_decode($jsonString, true);
+    } else {
+    }
     $data[$jsonKey] = $newData;
     $newJsonString = json_encode($data);
 

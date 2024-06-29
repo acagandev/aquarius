@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.3.1(9) - 29.06.2024
+- Fixed errors caused by missing json/graph.data.json (json/ directory still required)
+
 ## v0.3.0(8) - 16.06.2024
 - Fixed graph generation for multiple values instead of one
 - Graph generation as class with methods for different graph types

@@ -4,14 +4,14 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/templates/header.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dbHandler.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/dataTransfer.class.php');
 
-$showTables = new DataTransfer();
-$showColumns = new DataTransfer();
-$showTables->getTableNames();
+$dbStructure = new DataTransfer();
+$dbStructure->getTableNames();
 
-$jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/graph.data.json');
+$graphDataPath = $_SERVER['DOCUMENT_ROOT'] . '/json/graph.data.json';
+
+$jsonDataString = file_get_contents($graphDataPath);
 $jsonData = json_decode($jsonDataString, true);
 $tableList = $jsonData['table_names'];
-$columnList = $jsonData['column_names'];
 ?>
 
 <!DOCTYPE html>
@@ -26,8 +26,8 @@ $columnList = $jsonData['column_names'];
         if (isset($_POST['tableSelectList'])) {
 
           $tbl = $_POST['tableSelectList'];
-          $showColumns->getColumnNames($tbl);
-          $jsonDataString = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/json/graph.data.json');
+          $dbStructure->getColumnNames($tbl);
+          $jsonDataString = file_get_contents($graphDataPath);
           $jsonData = json_decode($jsonDataString, true);
           $columnList = $jsonData['column_names'];
         }
